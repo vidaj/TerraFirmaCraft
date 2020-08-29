@@ -219,6 +219,7 @@ METAL_ITEMS = {
     'sheet': False,
     'double_sheet': False,
     'anvil': True,
+    'trapdoor': False,
     'tuyere': True,
     'lamp': False,
     'pick': True,
@@ -284,6 +285,7 @@ FLUIDS = {
     'milk': 'milk',
     'olive_oil': 'olive_oil',
     'tannin': 'tannin',
+    'lye': 'lye',
     'limewater': 'limewater',
     'milk_curdled': 'milk_curdled',
     'milk_vinegar': 'milk_vinegar',
@@ -410,9 +412,8 @@ FOODS = [
     'venison',
     'rabbit',
     'wolf',
-    'viande',
-    'chevon',
-    'duck',
+    'camelidae',
+    'mongoose',
     'gran_feline',
     'cooked_beef',
     'cooked_pork',
@@ -426,9 +427,8 @@ FOODS = [
     'cooked_wolf',
     'cooked_venison',
     'cooked_rabbit',
-    'cooked_viande',
-    'cooked_chevon',
-    'cooked_duck',
+    'cooked_camelidae',
+    'cooked_mongoose',
     'cooked_gran_feline',
     'barley_bread_sandwich',
     'cornbread_sandwich',
@@ -699,7 +699,6 @@ for key in METAL_TYPES:
         },
         'facing': {'up': {}, 'down': {'model': "tfc:lamp/down"}}
     })
-
 
 # METAL SHEETS
 for key in METAL_TYPES:
@@ -976,6 +975,19 @@ for wood_type in WOOD_TYPES:
         }]
     })
 
+    # (WOOD) PRESSURE PLATE
+    blockstate(('wood', 'pressure_plate', wood_type), 'pressure_plate', textures={
+        ('texture', 'particle'): 'tfc:blocks/wood/planks/%s' % wood_type,
+    }, variants={
+        'powered': {
+            'false': {'model': 'stone_pressure_plate_up'},
+            'true': {'model': 'stone_pressure_plate_down'}
+        },
+        'inventory': [{
+            'model': 'stone_pressure_plate_up'
+        }]
+    })
+
     # BOOKSHELF
     blockstate(('wood', 'bookshelf', wood_type), 'tfc:bookshelf', textures={
         ('all', 'particle'): 'tfc:blocks/wood/planks/%s' % wood_type,
@@ -1103,6 +1115,9 @@ for item_type, tool_item in METAL_ITEMS.items():
         if item_type == 'anvil':
             model(('item', 'metal', 'anvil', metal), 'tfc:item/metal/anvil/transformations',
                   {'all': 'tfc:blocks/metal/%s' % metal})
+        elif item_type == 'trapdoor':
+            model(('item', 'metal', 'trapdoor', metal), 'block/trapdoor_bottom',
+                  {'texture': 'tfc:blocks/trapdoor/%s' % metal})
         else:
             parent = 'item/handheld' if item_type in TOOLS else 'item/generated'
             if item_type in ['knife', 'javelin']:
